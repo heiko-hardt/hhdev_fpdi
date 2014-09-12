@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -17,12 +19,12 @@
 //  limitations under the License.
 //
 
-require_once('fpdf_tpl.php');
+// require_once('fpdf_tpl.php');
 
 /**
- * Class FPDI
+ * Class Fpdi
  */
-class FPDI extends FPDF_TPL {
+class Fpdi extends \HeikoHardt\HhdevFpdi\FpdfTpl {
 	/**
 	 * FPDI version
 	 *
@@ -40,14 +42,14 @@ class FPDI extends FPDF_TPL {
 	/**
 	 * Parser-Objects
 	 *
-	 * @var fpdi_pdf_parser[]
+	 * @var \HeikoHardt\HhdevFpdi\FpdiPdfParser[]
 	 */
 	public $parsers = array();
 
 	/**
 	 * Current parser
 	 *
-	 * @var fpdi_pdf_parser
+	 * @var \HeikoHardt\HhdevFpdi\FpdiPdfParser
 	 */
 	public $currentParser;
 
@@ -119,11 +121,11 @@ class FPDI extends FPDF_TPL {
 	 *
 	 * @param string $filename
 	 *
-	 * @return fpdi_pdf_parser
+	 * @return \HeikoHardt\HhdevFpdi\FpdiPdfParser
 	 */
 	protected function _getPdfParser($filename) {
-		require_once('fpdi_pdf_parser.php');
-		return new fpdi_pdf_parser($filename);
+		// require_once('fpdi_pdf_parser.php');
+		return new \HeikoHardt\HhdevFpdi\FpdiPdfParser($filename);
 	}
 
 	/**
@@ -331,12 +333,12 @@ class FPDI extends FPDF_TPL {
 				try {
 					$nObj = $this->currentParser->resolveObject($this->_objStack[$filename][$n][1]);
 				} catch (Exception $e) {
-					$nObj = array(pdf_parser::TYPE_OBJECT, pdf_parser::TYPE_NULL);
+					$nObj = array(\HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJECT, \HeikoHardt\HhdevFpdi\PdfParser::TYPE_NULL);
 				}
 
 				$this->_newobj($this->_objStack[$filename][$n][0]);
 
-				if ($nObj[0] == pdf_parser::TYPE_STREAM) {
+				if ($nObj[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_STREAM) {
 					$this->_writeValue($nObj);
 				} else {
 					$this->_writeValue($nObj[1]);
@@ -511,11 +513,11 @@ class FPDI extends FPDF_TPL {
 
 		switch ($value[0]) {
 
-			case pdf_parser::TYPE_TOKEN:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_TOKEN:
 				$this->_straightOut($value[1] . ' ');
 				break;
-			case pdf_parser::TYPE_NUMERIC:
-			case pdf_parser::TYPE_REAL:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_NUMERIC:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_REAL:
 				if (is_float($value[1]) && $value[1] != 0) {
 					$this->_straightOut(rtrim(rtrim(sprintf('%F', $value[1]), '0'), '.') . ' ');
 				} else {
@@ -523,7 +525,7 @@ class FPDI extends FPDF_TPL {
 				}
 				break;
 
-			case pdf_parser::TYPE_ARRAY:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_ARRAY:
 
 				// An array. Output the proper
 				// structure and move on.
@@ -536,7 +538,7 @@ class FPDI extends FPDF_TPL {
 				$this->_out(']');
 				break;
 
-			case pdf_parser::TYPE_DICTIONARY:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_DICTIONARY:
 
 				// A dictionary.
 				$this->_straightOut('<<');
@@ -551,7 +553,7 @@ class FPDI extends FPDF_TPL {
 				$this->_straightOut('>>');
 				break;
 
-			case pdf_parser::TYPE_OBJREF:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJREF:
 
 				// An indirect object reference
 				// Fill the object stack if needed
@@ -566,14 +568,14 @@ class FPDI extends FPDF_TPL {
 				$this->_out($objId . ' 0 R');
 				break;
 
-			case pdf_parser::TYPE_STRING:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_STRING:
 
 				// A string.
 				$this->_straightOut('(' . $value[1] . ')');
 
 				break;
 
-			case pdf_parser::TYPE_STREAM:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_STREAM:
 
 				// A stream. First, output the
 				// stream dictionary, then the
@@ -584,15 +586,15 @@ class FPDI extends FPDF_TPL {
 				$this->_straightOut("endstream");
 				break;
 
-			case pdf_parser::TYPE_HEX:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_HEX:
 				$this->_straightOut('<' . $value[1] . '>');
 				break;
 
-			case pdf_parser::TYPE_BOOLEAN:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_BOOLEAN:
 				$this->_straightOut($value[1] ? 'true ' : 'false ');
 				break;
 
-			case pdf_parser::TYPE_NULL:
+			case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_NULL:
 				// The null object.
 
 				$this->_straightOut('null ');
@@ -665,7 +667,7 @@ class FPDI extends FPDF_TPL {
 	public function cleanUp() {
 		while (($parser = array_pop($this->parsers)) !== null) {
 			/**
-			 * @var fpdi_pdf_parser $parser
+			 * @var \HeikoHardt\HhdevFpdi\FpdiPdfParser $parser
 			 */
 			$parser->closeFile();
 		}

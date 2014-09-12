@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -17,12 +19,12 @@
 //  limitations under the License.
 //
 
-require_once('pdf_parser.php');
+// require_once('pdf_parser.php');
 
 /**
- * Class fpdi_pdf_parser
+ * Class FpdiPdfParser
  */
-class fpdi_pdf_parser extends pdf_parser {
+class FpdiPdfParser extends \HeikoHardt\HhdevFpdi\PdfParser {
 	/**
 	 * Pages
 	 * Index begins at 0
@@ -128,7 +130,7 @@ class fpdi_pdf_parser extends pdf_parser {
 		// parent object.
 		if (isset($obj[1][1]['/Resources'])) {
 			$res = $this->resolveObject($obj[1][1]['/Resources']);
-			if ($res[0] == pdf_parser::TYPE_OBJECT)
+			if ($res[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJECT)
 				return $res[1];
 			return $res;
 		}
@@ -138,7 +140,7 @@ class fpdi_pdf_parser extends pdf_parser {
 		}
 
 		$res = $this->_getPageResources($obj[1][1]['/Parent']);
-		if ($res[0] == pdf_parser::TYPE_OBJECT)
+		if ($res[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJECT)
 			return $res[1];
 		return $res;
 	}
@@ -172,14 +174,14 @@ class fpdi_pdf_parser extends pdf_parser {
 	protected function _getPageContent($contentRef) {
 		$contents = array();
 
-		if ($contentRef[0] == pdf_parser::TYPE_OBJREF) {
+		if ($contentRef[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJREF) {
 			$content = $this->resolveObject($contentRef);
-			if ($content[1][0] == pdf_parser::TYPE_ARRAY) {
+			if ($content[1][0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_ARRAY) {
 				$contents = $this->_getPageContent($content[1]);
 			} else {
 				$contents[] = $content;
 			}
-		} else if ($contentRef[0] == pdf_parser::TYPE_ARRAY) {
+		} else if ($contentRef[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_ARRAY) {
 			foreach ($contentRef[1] AS $tmp_content_ref) {
 				$contents = array_merge($contents, $this->_getPageContent($tmp_content_ref));
 			}
@@ -205,12 +207,12 @@ class fpdi_pdf_parser extends pdf_parser {
 			$box = $page[1][1][$boxIndex];
 		}
 
-		if (!is_null($box) && $box[0] == pdf_parser::TYPE_OBJREF) {
+		if (!is_null($box) && $box[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJREF) {
 			$tmp_box = $this->resolveObject($box);
 			$box = $tmp_box[1];
 		}
 
-		if (!is_null($box) && $box[0] == pdf_parser::TYPE_ARRAY) {
+		if (!is_null($box) && $box[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_ARRAY) {
 			$b = $box[1];
 			return array(
 				'x' => $b[0][1] / $k,
@@ -293,7 +295,7 @@ class fpdi_pdf_parser extends pdf_parser {
 		$obj = $this->resolveObject($obj);
 		if (isset($obj[1][1]['/Rotate'])) {
 			$res = $this->resolveObject($obj[1][1]['/Rotate']);
-			if ($res[0] == pdf_parser::TYPE_OBJECT)
+			if ($res[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJECT)
 				return $res[1];
 			return $res;
 		}
@@ -303,7 +305,7 @@ class fpdi_pdf_parser extends pdf_parser {
 		}
 
 		$res = $this->_getPageRotation($obj[1][1]['/Parent']);
-		if ($res[0] == pdf_parser::TYPE_OBJECT)
+		if ($res[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJECT)
 			return $res[1];
 
 		return $res;

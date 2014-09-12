@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -18,9 +20,9 @@
 //
 
 /**
- * Class pdf_context
+ * Class PdfContext
  */
-class pdf_context {
+class PdfContext {
 	/**
 	 * Mode
 	 *

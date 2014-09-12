@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi\Filter;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -18,9 +20,9 @@
 //
 
 /**
- * Class FilterLZW
+ * Class FilterLzw
  */
-class FilterLZW {
+class FilterLzw {
 	protected $_sTable = array();
 	protected $_data = null;
 	protected $_dataLength = 0;

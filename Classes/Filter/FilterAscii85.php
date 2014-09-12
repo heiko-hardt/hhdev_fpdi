@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi\Filter;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -18,9 +20,9 @@
 //
 
 /**
- * Class FilterASCII85
+ * Class FilterAscii85
  */
-class FilterASCII85 {
+class FilterAscii85 {
 	/**
 	 * Decode ASCII85 encoded string
 	 *

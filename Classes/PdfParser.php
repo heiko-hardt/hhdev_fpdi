@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -18,9 +20,9 @@
 //
 
 /**
- * Class pdf_parser
+ * Class PdfParser
  */
-class pdf_parser {
+class PdfParser {
 	/**
 	 * Type constant
 	 *
@@ -193,8 +195,8 @@ class pdf_parser {
 
 		$this->getPdfVersion();
 
-		require_once('pdf_context.php');
-		$this->_c = new pdf_context($this->_f);
+		// require_once('pdf_context.php');
+		$this->_c = new \HeikoHardt\HhdevFpdi\PdfContext($this->_f);
 
 		// Read xref-Data
 		$this->_xref = array();
@@ -839,14 +841,14 @@ class pdf_parser {
 		if (isset($obj[1][1]['/Filter'])) {
 			$filter = $obj[1][1]['/Filter'];
 
-			if ($filter[0] == pdf_parser::TYPE_OBJREF) {
+			if ($filter[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_OBJREF) {
 				$tmpFilter = $this->resolveObject($filter);
 				$filter = $tmpFilter[1];
 			}
 
-			if ($filter[0] == pdf_parser::TYPE_TOKEN) {
+			if ($filter[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_TOKEN) {
 				$filters[] = $filter;
-			} else if ($filter[0] == pdf_parser::TYPE_ARRAY) {
+			} else if ($filter[0] == \HeikoHardt\HhdevFpdi\PdfParser::TYPE_ARRAY) {
 				$filters = $filter[1];
 			}
 		}
@@ -880,18 +882,18 @@ class pdf_parser {
 					}
 					break;
 				case '/LZWDecode':
-					require_once('filters/FilterLZW.php');
-					$decoder = new FilterLZW();
+					// require_once('filters/FilterLZW.php');
+					$decoder = new \HeikoHardt\HhdevFpdi\Filter\FilterLzw();
 					$stream = $decoder->decode($stream);
 					break;
 				case '/ASCII85Decode':
-					require_once('filters/FilterASCII85.php');
-					$decoder = new FilterASCII85();
+					// require_once('filters/FilterASCII85.php');
+					$decoder = new \HeikoHardt\HhdevFpdi\Filter\FilterAscii85();
 					$stream = $decoder->decode($stream);
 					break;
 				case '/ASCIIHexDecode':
-					require_once('filters/FilterASCIIHexDecode.php');
-					$decoder = new FilterASCIIHexDecode();
+					// require_once('filters/FilterASCIIHexDecode.php');
+					$decoder = new \HeikoHardt\HhdevFpdi\Filter\FilterAsciiHexDecode();
 					$stream = $decoder->decode($stream);
 					break;
 				case null:

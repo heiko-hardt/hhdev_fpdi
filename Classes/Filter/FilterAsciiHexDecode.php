@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi\Filter;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -18,9 +20,9 @@
 //
 
 /**
- * Class FilterASCIIHexDecode
+ * Class FilterAsciiHexDecode
  */
-class FilterASCIIHexDecode {
+class FilterAsciiHexDecode {
 	/**
 	 * Converts an ASCII hexadecimal encoded string into it's binary representation.
 	 *

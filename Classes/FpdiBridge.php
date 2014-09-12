@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -24,20 +26,20 @@
  * This way it is possible to use FPDI for both FPDF and TCPDF with one FPDI version.
  */
 
-if (!class_exists('TCPDF', false)) {
+if (!class_exists('\HeikoHardt\HhdevTcpdf\Tcpdf', false)) {
 	/**
-	 * Class fpdi_bridge
+	 * Class FpdiBridge
 	 */
-	class fpdi_bridge extends FPDF {
+	class FpdiBridge extends \HeikoHardt\HhdevFpdf\Fpdf {
 		// empty body
 	}
 
 } else {
 
 	/**
-	 * Class fpdi_bridge
+	 * Class FpdiBridge
 	 */
-	class fpdi_bridge extends TCPDF {
+	class FpdiBridge extends \HeikoHardt\HhdevTcpdf\Tcpdf {
 		/**
 		 * Array of Tpl-Data
 		 *
@@ -82,7 +84,7 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		protected function _prepareValue(&$value) {
 			switch ($value[0]) {
-				case pdf_parser::TYPE_STRING:
+				case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_STRING:
 					if ($this->encrypted) {
 						$value[1] = $this->_unescape($value[1]);
 						$value[1] = $this->_encrypt_data($this->_currentObjId, $value[1]);
@@ -90,17 +92,17 @@ if (!class_exists('TCPDF', false)) {
 					}
 					break;
 
-				case pdf_parser::TYPE_STREAM:
+				case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_STREAM:
 					if ($this->encrypted) {
 						$value[2][1] = $this->_encrypt_data($this->_currentObjId, $value[2][1]);
 						$value[1][1]['/Length'] = array(
-							pdf_parser::TYPE_NUMERIC,
+							\HeikoHardt\HhdevFpdi\PdfParser::TYPE_NUMERIC,
 							strlen($value[2][1])
 						);
 					}
 					break;
 
-				case pdf_parser::TYPE_HEX:
+				case \HeikoHardt\HhdevFpdi\PdfParser::TYPE_HEX:
 					if ($this->encrypted) {
 						$value[1] = $this->hex2str($value[1]);
 						$value[1] = $this->_encrypt_data($this->_currentObjId, $value[1]);

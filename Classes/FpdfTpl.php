@@ -1,4 +1,6 @@
 <?php
+namespace HeikoHardt\HhdevFpdi;
+
 //
 //  FPDI - Version 1.5.2
 //
@@ -17,12 +19,12 @@
 //  limitations under the License.
 //
 
-require_once('fpdi_bridge.php');
+// require_once('fpdi_bridge.php');
 
 /**
- * Class FPDF_TPL
+ * Class FpdfTpl
  */
-class FPDF_TPL extends fpdi_bridge {
+class FpdfTpl extends \HeikoHardt\HhdevFpdi\FpdiBridge {
 	/**
 	 * Array of template data
 	 *
